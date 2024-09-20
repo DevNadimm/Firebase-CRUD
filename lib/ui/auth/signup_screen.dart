@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crud/ui/auth/login_screen.dart';
 import 'package:firebase_crud/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -72,7 +73,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           if (value == null || value.isEmpty) {
                             return "Please enter a valid email";
                           } else if (!RegExp(
-                                  r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                                  r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
                               .hasMatch(value)) {
                             return "Please enter a valid email address";
                           } else {
@@ -124,12 +125,29 @@ class _SignupScreenState extends State<SignupScreen> {
                 ),
                 RoundedButton(
                   title: "Sign Up",
-                  onTap: () {
+                  onTap: () async {
                     if (_key.currentState!.validate()) {
-                      _auth.createUserWithEmailAndPassword(
-                        email: _emailController.text.toString(),
-                        password: _passwordController.text.toString(),
-                      );
+                      try {
+                        await _auth.createUserWithEmailAndPassword(
+                          email: _emailController.text.toString(),
+                          password: _passwordController.text.toString(),
+                        );
+                        Fluttertoast.showToast(
+                          msg: "Sign up successful",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.green,
+                          textColor: Colors.white,
+                        );
+                      } on FirebaseAuthException catch (e) {
+                        Fluttertoast.showToast(
+                          msg: e.message ?? "An error occurred",
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          backgroundColor: Colors.red,
+                          textColor: Colors.white,
+                        );
+                      }
                     }
                   },
                 ),
