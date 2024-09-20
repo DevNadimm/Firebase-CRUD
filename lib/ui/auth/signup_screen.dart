@@ -129,8 +129,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     if (_key.currentState!.validate()) {
                       try {
                         await _auth.createUserWithEmailAndPassword(
-                          email: _emailController.text.toString(),
-                          password: _passwordController.text.toString(),
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
                         );
                         Fluttertoast.showToast(
                           msg: "Sign up successful",

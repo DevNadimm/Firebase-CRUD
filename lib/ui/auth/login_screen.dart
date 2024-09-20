@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_crud/ui/auth/signup_screen.dart';
+import 'package:firebase_crud/ui/home_screen.dart';
 import 'package:firebase_crud/widgets/rounded_button.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _key = GlobalKey();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +99,60 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
             RoundedButton(
               title: "Login",
-              onTap: () {
-                if (_key.currentState!.validate()) {}
+              onTap: () async {
+                if (_key.currentState!.validate()) {
+                  try {
+                    await _auth.signInWithEmailAndPassword(
+                        email: _emailController.text.trim(),
+                        password: _passwordController.text.trim());
+                    Fluttertoast.showToast(
+                      msg: "Login successful",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                      textColor: Colors.white,
+                    );
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const HomeScreen(),
+                      ),
+                    );
+                  } on FirebaseAuthException catch (e) {
+                    String errorMessage;
+                    switch (e.code) {
+                      case 'invalid-email':
+                        errorMessage = "The email address is not valid.";
+                        break;
+                      case 'user-disabled':
+                        errorMessage = "This user has been disabled.";
+                        break;
+                      case 'user-not-found':
+                        errorMessage = "No user found for this email.";
+                        break;
+                      case 'wrong-password':
+                        errorMessage = "Wrong password provided.";
+                        break;
+                      default:
+                        errorMessage = "An unknown error occurred.";
+                    }
+                    Fluttertoast.showToast(
+                      msg: errorMessage,
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                    );
+                  } catch (e) {
+                    Fluttertoast.showToast(
+                      msg: "An error occurred. Please try again.",
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red,
+                      textColor: Colors.white,
+                    );
+                  }
+                }
               },
             ),
             Row(
