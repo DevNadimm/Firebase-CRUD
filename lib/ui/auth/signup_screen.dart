@@ -139,6 +139,12 @@ class _SignupScreenState extends State<SignupScreen> {
                           backgroundColor: Colors.green,
                           textColor: Colors.white,
                         );
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const LoginScreen(),
+                          ),
+                        );
                       } on FirebaseAuthException catch (e) {
                         Fluttertoast.showToast(
                           msg: e.message ?? "An error occurred",
