@@ -2,12 +2,19 @@ import 'package:firebase_crud/ui/create_contact.dart';
 import 'package:firebase_crud/widgets/logout_dialog.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   final DatabaseReference ref = FirebaseDatabase.instance.ref('Contact');
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,25 @@ class HomeScreen extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: TextFormField(
+              controller: _searchController,
+              onChanged: (String value) {
+                setState(() {});
+              },
+              decoration: InputDecoration(
+                fillColor: Colors.deepPurple.withOpacity(0.1),
+                filled: true,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide.none,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                hintText: "Search contact",
+                prefixIcon: const Icon(CupertinoIcons.search),
+              ),
+            ),
+          ),
           Expanded(
             child: FirebaseAnimatedList(
               query: ref,
@@ -58,6 +84,8 @@ class HomeScreen extends StatelessWidget {
               itemBuilder: (context, snapshot, animation, index) {
                 String name = snapshot.child('name').value.toString();
                 String contact = snapshot.child('contact').value.toString();
+
+
 
                 return ListTile(
                   title: Text(
