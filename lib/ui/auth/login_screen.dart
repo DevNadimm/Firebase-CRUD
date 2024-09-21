@@ -40,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextFormField(
                         controller: _emailController,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter a valid email";
@@ -67,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextFormField(
                         controller: _passwordController,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -89,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                     ],
                   ),

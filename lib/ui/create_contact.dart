@@ -56,6 +56,7 @@ class _CreateContactState extends State<CreateContact> {
                   children: [
                     TextFormField(
                       controller: _nameController,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                       validator: (value) {
                         if (value!.isEmpty) {
                           return "Please enter a name";
@@ -76,10 +77,9 @@ class _CreateContactState extends State<CreateContact> {
                     const SizedBox(height: 10),
                     TextFormField(
                       controller: _phoneController,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                       keyboardType: TextInputType.number,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please enter a contact number";

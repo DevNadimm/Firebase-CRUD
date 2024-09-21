@@ -40,6 +40,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     children: [
                       TextFormField(
                         controller: _nameController,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Please enter your name";
@@ -63,6 +64,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       TextFormField(
                         controller: _emailController,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter a valid email";
@@ -90,6 +92,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       TextFormField(
                         controller: _passwordController,
+                        style: const TextStyle(fontWeight: FontWeight.w600),
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -112,7 +115,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         ),
                       ),
                       const SizedBox(
-                        height: 20,
+                        height: 10,
                       ),
                     ],
                   ),
