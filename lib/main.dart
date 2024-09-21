@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       title: 'Firebase CRUD',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0XFF0060D4)),
         useMaterial3: true,
       ),
       home: const SplashScreen(),
