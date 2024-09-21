@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 
 class RoundedButton extends StatelessWidget {
-  const RoundedButton({super.key, required this.title, required this.onTap});
+  const RoundedButton(
+      {super.key,
+      required this.title,
+      required this.onTap,
+      this.isLoading = false});
 
   final String title;
   final VoidCallback onTap;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +26,15 @@ class RoundedButton extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(12),
-          child: Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          child: isLoading
+              ? const CircularProgressIndicator(color: Colors.white,)
+              : Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
         ),
       ),
     );

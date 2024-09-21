@@ -101,54 +101,53 @@ class _CreateContactState extends State<CreateContact> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      _isSaving
-                          ? const CircularProgressIndicator()
-                          : RoundedButton(
-                              title: 'Save',
-                              onTap: () async {
-                                if (_key.currentState!.validate()) {
-                                  setState(() {
-                                    _isSaving = true;
-                                  });
+                      RoundedButton(
+                        title: 'Save',
+                        isLoading: _isSaving,
+                        onTap: () async {
+                          if (_key.currentState!.validate()) {
+                            setState(() {
+                              _isSaving = true;
+                            });
 
-                                  FocusScope.of(context).unfocus();
+                            FocusScope.of(context).unfocus();
 
-                                  try {
-                                    String key = databaseRef.push().key!;
-                                    await databaseRef.child(key).set({
-                                      'name': _nameController.text.trim(),
-                                      'contact': _phoneController.text.trim(),
-                                    });
+                            try {
+                              String key = databaseRef.push().key!;
+                              await databaseRef.child(key).set({
+                                'name': _nameController.text.trim(),
+                                'contact': _phoneController.text.trim(),
+                              });
 
-                                    Fluttertoast.showToast(
-                                      msg: "Contact saved successfully",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.BOTTOM,
-                                      backgroundColor: Colors.green,
-                                      textColor: Colors.white,
-                                    );
+                              Fluttertoast.showToast(
+                                msg: "Contact saved successfully",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.green,
+                                textColor: Colors.white,
+                              );
 
-                                    _key.currentState!.reset();
-                                    _nameController.clear();
-                                    _phoneController.clear();
+                              _key.currentState!.reset();
+                              _nameController.clear();
+                              _phoneController.clear();
 
-                                    Navigator.pop(context);
-                                  } catch (error) {
-                                    Fluttertoast.showToast(
-                                      msg: "Failed to save contact: $error",
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.BOTTOM,
-                                      backgroundColor: Colors.red,
-                                      textColor: Colors.white,
-                                    );
-                                  } finally {
-                                    setState(() {
-                                      _isSaving = false;
-                                    });
-                                  }
-                                }
-                              },
-                            ),
+                              Navigator.pop(context);
+                            } catch (error) {
+                              Fluttertoast.showToast(
+                                msg: "Failed to save contact: $error",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                backgroundColor: Colors.red,
+                                textColor: Colors.white,
+                              );
+                            } finally {
+                              setState(() {
+                                _isSaving = false;
+                              });
+                            }
+                          }
+                        },
+                      ),
                     ],
                   ),
                 ),
