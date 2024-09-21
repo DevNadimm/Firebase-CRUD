@@ -1,13 +1,32 @@
 import 'package:firebase_crud/widgets/rounded_button.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-class CreateContact extends StatelessWidget {
-  CreateContact({super.key});
+class CreateContact extends StatefulWidget {
+  const CreateContact({super.key});
 
+  @override
+  _CreateContactState createState() => _CreateContactState();
+}
+
+class _CreateContactState extends State<CreateContact> {
   final GlobalKey<FormState> _key = GlobalKey();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
+  final DatabaseReference databaseRef =
+      FirebaseDatabase.instance.ref('Contact');
+
+  bool _isSaving = false;
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +60,8 @@ class CreateContact extends StatelessWidget {
                         validator: (value) {
                           if (value!.isEmpty) {
                             return "Please enter a name";
-                          } else {
-                            return null;
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.deepPurple.withOpacity(0.1),
@@ -60,16 +78,16 @@ class CreateContact extends StatelessWidget {
                       TextFormField(
                         controller: _phoneController,
                         keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter a contact number";
-                          } else if (value.length < 10 || value.length > 12) {
-                            return "Contact number must be between 10 and 12 digits";
-                          } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
-                            return "Contact number must contain only digits";
-                          } else {
-                            return null;
+                          } else if (value.length < 9 || value.length > 12) {
+                            return "Contact number must be between 9 and 12 digits";
                           }
+                          return null;
                         },
                         decoration: InputDecoration(
                           fillColor: Colors.deepPurple.withOpacity(0.1),
@@ -83,14 +101,54 @@ class CreateContact extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      RoundedButton(
-                        title: 'Save',
-                        onTap: () {
-                          if (_key.currentState!.validate()) {
+                      _isSaving
+                          ? const CircularProgressIndicator()
+                          : RoundedButton(
+                              title: 'Save',
+                              onTap: () async {
+                                if (_key.currentState!.validate()) {
+                                  setState(() {
+                                    _isSaving = true;
+                                  });
 
-                          }
-                        },
-                      ),
+                                  FocusScope.of(context).unfocus();
+
+                                  try {
+                                    String key = databaseRef.push().key!;
+                                    await databaseRef.child(key).set({
+                                      'name': _nameController.text.trim(),
+                                      'contact': _phoneController.text.trim(),
+                                    });
+
+                                    Fluttertoast.showToast(
+                                      msg: "Contact saved successfully",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      backgroundColor: Colors.green,
+                                      textColor: Colors.white,
+                                    );
+
+                                    _key.currentState!.reset();
+                                    _nameController.clear();
+                                    _phoneController.clear();
+
+                                    Navigator.pop(context);
+                                  } catch (error) {
+                                    Fluttertoast.showToast(
+                                      msg: "Failed to save contact: $error",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      backgroundColor: Colors.red,
+                                      textColor: Colors.white,
+                                    );
+                                  } finally {
+                                    setState(() {
+                                      _isSaving = false;
+                                    });
+                                  }
+                                }
+                              },
+                            ),
                     ],
                   ),
                 ),
