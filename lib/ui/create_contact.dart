@@ -45,114 +45,112 @@ class _CreateContactState extends State<CreateContact> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Center(
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Form(
-                  key: _key,
-                  child: Column(
-                    children: [
-                      TextFormField(
-                        controller: _nameController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Please enter a name";
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Colors.deepPurple.withOpacity(0.1),
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          hintText: "Name",
-                          prefixIcon: const Icon(Icons.person_outline),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Form(
+                key: _key,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: _nameController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please enter a name";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        fillColor: Colors.deepPurple.withOpacity(0.1),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        hintText: "Name",
+                        prefixIcon: const Icon(Icons.person_outline),
                       ),
-                      const SizedBox(height: 10),
-                      TextFormField(
-                        controller: _phoneController,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter a contact number";
-                          } else if (value.length < 9 || value.length > 12) {
-                            return "Contact number must be between 9 and 12 digits";
-                          }
-                          return null;
-                        },
-                        decoration: InputDecoration(
-                          fillColor: Colors.deepPurple.withOpacity(0.1),
-                          filled: true,
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          hintText: "Contact No.",
-                          prefixIcon: const Icon(CupertinoIcons.phone),
+                    ),
+                    const SizedBox(height: 10),
+                    TextFormField(
+                      controller: _phoneController,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please enter a contact number";
+                        } else if (value.length < 9 || value.length > 12) {
+                          return "Contact number must be between 9 and 12 digits";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        fillColor: Colors.deepPurple.withOpacity(0.1),
+                        filled: true,
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        hintText: "Contact No.",
+                        prefixIcon: const Icon(CupertinoIcons.phone),
                       ),
-                      const SizedBox(height: 20),
-                      RoundedButton(
-                        title: 'Save',
-                        isLoading: _isSaving,
-                        onTap: () async {
-                          if (_key.currentState!.validate()) {
-                            setState(() {
-                              _isSaving = true;
+                    ),
+                    const SizedBox(height: 10),
+                    RoundedButton(
+                      title: 'Save',
+                      isLoading: _isSaving,
+                      onTap: () async {
+                        if (_key.currentState!.validate()) {
+                          setState(() {
+                            _isSaving = true;
+                          });
+
+                          FocusScope.of(context).unfocus();
+
+                          try {
+                            String key = databaseRef.push().key!;
+                            await databaseRef.child(key).set({
+                              'name': _nameController.text.trim(),
+                              'contact': _phoneController.text.trim(),
                             });
 
-                            FocusScope.of(context).unfocus();
+                            Fluttertoast.showToast(
+                              msg: "Contact saved successfully",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                            );
 
-                            try {
-                              String key = databaseRef.push().key!;
-                              await databaseRef.child(key).set({
-                                'name': _nameController.text.trim(),
-                                'contact': _phoneController.text.trim(),
-                              });
+                            _key.currentState!.reset();
+                            _nameController.clear();
+                            _phoneController.clear();
 
-                              Fluttertoast.showToast(
-                                msg: "Contact saved successfully",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.green,
-                                textColor: Colors.white,
-                              );
-
-                              _key.currentState!.reset();
-                              _nameController.clear();
-                              _phoneController.clear();
-
-                              Navigator.pop(context);
-                            } catch (error) {
-                              Fluttertoast.showToast(
-                                msg: "Failed to save contact: $error",
-                                toastLength: Toast.LENGTH_SHORT,
-                                gravity: ToastGravity.BOTTOM,
-                                backgroundColor: Colors.red,
-                                textColor: Colors.white,
-                              );
-                            } finally {
-                              setState(() {
-                                _isSaving = false;
-                              });
-                            }
+                            Navigator.pop(context);
+                          } catch (error) {
+                            Fluttertoast.showToast(
+                              msg: "Failed to save contact: $error",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                            );
+                          } finally {
+                            setState(() {
+                              _isSaving = false;
+                            });
                           }
-                        },
-                      ),
-                    ],
-                  ),
+                        }
+                      },
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
