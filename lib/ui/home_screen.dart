@@ -21,10 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Home",
+          "Contact List",
           style: TextStyle(
             fontWeight: FontWeight.w600,
-            color: Colors.white,
           ),
         ),
         actions: [
@@ -58,9 +57,10 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.all(10),
             child: TextFormField(
               controller: _searchController,
-              onChanged: (String value) {
+              onChanged: (value) {
                 setState(() {});
               },
+              style: const TextStyle(fontWeight: FontWeight.w600),
               decoration: InputDecoration(
                 fillColor: Colors.deepPurple.withOpacity(0.1),
                 filled: true,
@@ -69,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.circular(12),
                 ),
                 hintText: "Search contact",
+                hintStyle: const TextStyle(fontWeight: FontWeight.w600),
                 prefixIcon: const Icon(CupertinoIcons.search),
               ),
             ),
@@ -85,25 +86,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 String name = snapshot.child('name').value.toString();
                 String contact = snapshot.child('contact').value.toString();
 
-
-
-                return ListTile(
-                  title: Text(
-                    name,
-                    style: const TextStyle(fontWeight: FontWeight.w600),
-                  ),
-                  subtitle: Text(
-                    contact,
-                    style: const TextStyle(fontWeight: FontWeight.w500),
-                  ),
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.deepPurple,
-                    child: Text(
-                      name[0].toUpperCase(),
-                      style: const TextStyle(color: Colors.white),
+                if (_searchController.text.isEmpty ||
+                    name
+                        .toLowerCase()
+                        .contains(_searchController.text.toLowerCase())) {
+                  return ListTile(
+                    title: Text(
+                      name,
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
-                  ),
-                );
+                    subtitle: Text(
+                      contact,
+                      style: const TextStyle(fontWeight: FontWeight.w500),
+                    ),
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.deepPurple,
+                      child: Text(
+                        name[0].toUpperCase(),
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
               },
             ),
           ),
