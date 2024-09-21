@@ -52,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                         decoration: InputDecoration(
-                          fillColor: Colors.deepPurple.withOpacity(0.1),
+                          fillColor: const Color(0XFF0060D4).withOpacity(0.1),
                           filled: true,
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -78,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           }
                         },
                         decoration: InputDecoration(
-                          fillColor: Colors.deepPurple.withOpacity(0.1),
+                          fillColor: const Color(0XFF0060D4).withOpacity(0.1),
                           filled: true,
                           border: OutlineInputBorder(
                             borderSide: BorderSide.none,
@@ -112,7 +112,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => HomeScreen(),
+                            builder: (_) => const HomeScreen(),
                           ),
                         );
                       } on FirebaseAuthException catch (e) {
@@ -172,7 +172,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         "Sign Up",
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          color: Colors.deepPurple,
+                          color: Color(0XFF0060D4),
                         ),
                       ),
                     ),

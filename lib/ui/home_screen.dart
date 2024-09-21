@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.logout),
           ),
         ],
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0XFF0060D4),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         },
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0XFF0060D4),
         foregroundColor: Colors.white,
         child: const Icon(Icons.add_box),
       ),
@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               style: const TextStyle(fontWeight: FontWeight.w600),
               decoration: InputDecoration(
-                fillColor: Colors.deepPurple.withOpacity(0.1),
+                fillColor: const Color(0XFF0060D4).withOpacity(0.1),
                 filled: true,
                 border: OutlineInputBorder(
                   borderSide: BorderSide.none,
@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
               query: ref,
               defaultChild: const Center(
                 child: CircularProgressIndicator(
-                  color: Colors.deepPurple,
+                  color: Color(0XFF0060D4),
                 ),
               ),
               itemBuilder: (context, snapshot, animation, index) {
@@ -100,7 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: const TextStyle(fontWeight: FontWeight.w500),
                     ),
                     leading: CircleAvatar(
-                      backgroundColor: Colors.deepPurple,
+                      backgroundColor: const Color(0XFF0060D4),
                       child: Text(
                         name[0].toUpperCase(),
                         style: const TextStyle(color: Colors.white),

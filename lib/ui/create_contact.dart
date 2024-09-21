@@ -39,7 +39,7 @@ class _CreateContactState extends State<CreateContact> {
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0XFF0060D4),
         foregroundColor: Colors.white,
         centerTitle: true,
       ),
@@ -63,7 +63,7 @@ class _CreateContactState extends State<CreateContact> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        fillColor: Colors.deepPurple.withOpacity(0.1),
+                        fillColor: const Color(0XFF0060D4).withOpacity(0.1),
                         filled: true,
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
@@ -89,7 +89,7 @@ class _CreateContactState extends State<CreateContact> {
                         return null;
                       },
                       decoration: InputDecoration(
-                        fillColor: Colors.deepPurple.withOpacity(0.1),
+                        fillColor: const Color(0XFF0060D4).withOpacity(0.1),
                         filled: true,
                         border: OutlineInputBorder(
                           borderSide: BorderSide.none,
