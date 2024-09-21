@@ -1,3 +1,4 @@
+import 'package:firebase_crud/ui/create_contact.dart';
 import 'package:firebase_crud/widgets/logout_dialog.dart';
 import 'package:flutter/material.dart';
 
@@ -26,6 +27,19 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Colors.deepPurple,
         foregroundColor: Colors.white,
         centerTitle: true,
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => CreateContact(),
+            ),
+          );
+        },
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+        child: const Icon(Icons.add_box),
       ),
       body: const Center(
         child: Text('Home Screen Content'),
