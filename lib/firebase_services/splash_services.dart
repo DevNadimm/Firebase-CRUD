@@ -16,7 +16,7 @@ class SplashServices {
         () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-            builder: (_) => HomeScreen(),
+            builder: (_) => const HomeScreen(),
           ),
         ),
       );
