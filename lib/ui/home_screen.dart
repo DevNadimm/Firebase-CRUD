@@ -17,8 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final DatabaseReference ref = FirebaseDatabase.instance.ref('Contact');
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _nameUpdateController = TextEditingController();
-  final TextEditingController _contactUpdateController =
-      TextEditingController();
+  final TextEditingController _contactUpdateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
