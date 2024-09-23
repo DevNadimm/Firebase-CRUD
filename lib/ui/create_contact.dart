@@ -113,11 +113,13 @@ class _CreateContactState extends State<CreateContact> {
 
                           try {
                             String key = databaseRef.push().key!;
-                            await databaseRef.child(key).set({
-                              'name': _nameController.text.trim(),
-                              'contact': _phoneController.text.trim(),
-                              'id': key,
-                            });
+                            await databaseRef.child(key).set(
+                              {
+                                'name': _nameController.text.trim(),
+                                'contact': _phoneController.text.trim(),
+                                'id': key,
+                              },
+                            );
 
                             Fluttertoast.showToast(
                               msg: "Contact saved successfully",
