@@ -27,7 +27,7 @@ class RoundedButton extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: isLoading
-              ? const CircularProgressIndicator(color: Colors.white,)
+              ? const CircularProgressIndicator(color: Colors.white)
               : Text(
                   title,
                   style: const TextStyle(

@@ -1,4 +1,5 @@
 import 'package:firebase_crud/ui/firebase_database/contact_list.dart';
+import 'package:firebase_crud/ui/firebase_firestore/contact_list_firestore.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -66,12 +67,12 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: InkWell(
                 onTap: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) => const ContactList(),
-                  //   ),
-                  // );
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const ContactListFirestore(),
+                    ),
+                  );
                 },
                 child: Card(
                   child: Container(
