@@ -112,12 +112,18 @@ class _CreateContactFirestoreState extends State<CreateContactFirestore> {
                           FocusScope.of(context).unfocus();
 
                           try {
-                            DocumentReference newContactRef = databaseCollection.doc();
 
-                            await newContactRef.set({
+                            /// 1 Approach
+                            // DocumentReference newContactRef = databaseCollection.doc();
+                            // await newContactRef.set({
+                            //   'name': _nameController.text.trim(),
+                            //   'contact': _phoneController.text.trim(),
+                            // });
+
+                            /// Another Approach
+                            await databaseCollection.add({
                               'name': _nameController.text.trim(),
                               'contact': _phoneController.text.trim(),
-                              'id': newContactRef.id,
                             });
 
                             Fluttertoast.showToast(
