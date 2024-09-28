@@ -1,10 +1,10 @@
 import 'package:firebase_crud/ui/firebase_database/create_contact.dart';
+import 'package:firebase_crud/widgets/edit_dialog.dart';
 import 'package:firebase_crud/widgets/logout_dialog.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 class ContactList extends StatefulWidget {
   const ContactList({super.key});
@@ -16,8 +16,6 @@ class ContactList extends StatefulWidget {
 class _ContactListState extends State<ContactList> {
   final DatabaseReference ref = FirebaseDatabase.instance.ref('Contact');
   final TextEditingController _searchController = TextEditingController();
-  final TextEditingController _nameUpdateController = TextEditingController();
-  final TextEditingController _contactUpdateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +114,7 @@ class _ContactListState extends State<ContactList> {
                         PopupMenuItem(
                           value: 1,
                           onTap: () {
-                            showMyDialog(name, contact, id);
+                            showEditDialog(context, name, contact, id);
                           },
                           child: const ListTile(
                             leading: Icon(Icons.edit),
@@ -144,112 +142,6 @@ class _ContactListState extends State<ContactList> {
           ),
         ],
       ),
-    );
-  }
-
-  Future<void> showMyDialog(String name, String contact, String id) async {
-    _nameUpdateController.text = name;
-    _contactUpdateController.text = contact;
-
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text(
-            'Update',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
-            ),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: _nameUpdateController,
-                decoration: InputDecoration(
-                  label: const Text('Name'),
-                  labelStyle: const TextStyle(fontWeight: FontWeight.w500),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(width: 2, color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(width: 2, color: Colors.grey),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              TextField(
-                keyboardType: TextInputType.number,
-                inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                controller: _contactUpdateController,
-                decoration: InputDecoration(
-                  label: const Text('Contact'),
-                  labelStyle: const TextStyle(fontWeight: FontWeight.w500),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(width: 2, color: Colors.grey),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12),
-                    borderSide: const BorderSide(width: 2, color: Colors.grey),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.grey[300],
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                "Cancel",
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                ref.child(id).update(
-                  {
-                    'name': _nameUpdateController.text.trim(),
-                    'contact': _contactUpdateController.text.trim(),
-                  },
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0XFF0060D4),
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                "Save",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
     );
   }
 }
